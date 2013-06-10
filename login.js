@@ -9,7 +9,7 @@ function respondLogin(req,res){
 	
 	res.render('login.jade',{});	
 }
-
+ 
 function respondLoginDo(req,res){
 	db.users.find({username:req.body.user,password:req.body.pass},function(err,urs){
 		if (err || !urs){

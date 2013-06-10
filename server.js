@@ -9,6 +9,8 @@ var login=require('./login'),
 	http=require('http'),
 	singleapp=require('./singleapp'),
 	editpage=require('./editpage'),
+	MemoryStore = express.session.MemoryStore,
+	sessionStore = new MemoryStore();
 	app = express(),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server);
@@ -17,16 +19,21 @@ var login=require('./login'),
 app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
-  app.use(express.session({secret:'supadupadudu'}));
+  app.use(express.session({
+	  store: sessionStore,
+	  secret:'supadupadudu',
+	  key: 'express.sid'}));
 });
 
 app.set('view engine', 'jade');
 app.use("/publicweb", express.static(__dirname + '/publicweb'));
 var collections = ["users","apps","pages"];
 var db = require('mongojs').connect(connectionString);
+
+
 login.setApp(db);
 apps.setApp(db);
-socketIO.setupSocket(db,io);
+socketIO.setupSocket(db,io,sessionStore);
 singleapp.setApp(db);
 editpage.setApp(db);
 
