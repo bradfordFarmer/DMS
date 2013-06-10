@@ -36,7 +36,7 @@ function setupSocket(myDB, myIO){
 						databaseError(appAlreadyExistsMessage);		
 					}else{
 						db.apps.save({appname:(data.appname)},function(err,urs){ 
-							socket.emit('New Application Added', ': '. data.appname.' was added');
+							socket.emit('New Application Added', ': '+ data.appname+' was added');
 						});
 					}		
 				}	
