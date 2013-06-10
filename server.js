@@ -23,7 +23,7 @@ app.configure(function() {
 app.set('view engine', 'jade');
 app.use("/publicweb", express.static(__dirname + '/publicweb'));
 var collections = ["users","apps","pages"];
-var db = require('mongojs').connect(connectionString, collections);
+var db = require('mongojs').connect(connectionString);
 login.setApp(db);
 apps.setApp(db);
 socketIO.setupSocket(db,io);
