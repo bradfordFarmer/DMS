@@ -1,6 +1,6 @@
 
 
-var outport= process.env.PORT || 1337;;
+var outport= process.env.PORT || 1337;
 var express = require('express');
 var connectionString = process.env.CUSTOMCONNSTR_MONGOLAB_URI ||  "localhost:27017";
 var login=require('./login'),
@@ -10,6 +10,7 @@ var login=require('./login'),
 	singleapp=require('./singleapp'),
 	editpage=require('./editpage'),
 	app = express(),
+	mongod=require('mongodb').MongoClient;
 	server = http.createServer(app),
 	io = require('socket.io').listen(server);
 
@@ -22,16 +23,15 @@ app.configure(function() {
 
 app.set('view engine', 'jade');
 app.use("/publicweb", express.static(__dirname + '/publicweb'));
-
-var databaseUrl = "localhost:27017"; // "username:password@example.com/mydb"
 var collections = ["users","apps","pages"];
-
-var db = require("mongojs").connect(connectionString, collections);
+var db = require('mongojs').connect(connectionString, collections);
 login.setApp(db);
 apps.setApp(db);
 socketIO.setupSocket(db,io);
 singleapp.setApp(db);
 editpage.setApp(db);
+
+
 //login and register
 app.get('/', login.respondLogin);
 app.get('/login', login.respondLogin);
