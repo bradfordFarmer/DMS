@@ -1,0 +1,19 @@
+head
+
+	| <link rel="stylesheet" type="text/css" href="/publicweb/style.css">
+	style(src='/publicweb/style.css')
+	script(src='http://code.jquery.com/jquery-latest.js')
+	script(src='/publicweb/jcookies.js')
+	script(src='/socket.io/socket.io.js')
+	script 
+		var socket = io.connect('http://localhost:4000');
+		socket.on('Database Error', function (data) {
+			alert(data.error);
+			$("#message").html(data.error);
+		});
+	block scripts
+	
+body(onload='init()')
+	block content
+	block footer
+	

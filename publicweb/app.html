@@ -1,0 +1,29 @@
+<head><link rel="stylesheet" type="text/css" href="publicweb/style.css">
+<script type="text/javascript" src='publicweb/jquery.js'></script>
+<script type="text/javascript" src='publicweb/jcookies.js'></script><script>apps=null;
+function init(){
+ //getApp();
+}
+function getApp()
+{
+ $.ajax({ method:'post',url: "/getappsdo",context: document.body,
+  data:{}
+  }).done(function(data) {
+   $("#appcontainer").html("");
+   var ob=JSON.parse(data);
+   if (ob.length>0){
+    $("#message").html("Apps Loaded.");
+    apps=ob;
+    for (var i in apps){
+     var tapp=apps[i];
+     var fn="getApp('"+tapp.appname+"')";
+     $("#appcontainer").append("<input type='submit' name="+tapp.appname+" value='"+tapp.appname+"'  onclick="+fn+"  >");	
+    }
+   }else{
+    $("#message").html("No Apps Yet. Add some in the panel below.");
+   }
+   
+  }
+ );		
+ 
+}</script></head><body onload="init()"><div class="contentblock_wrapper"><div id="header" class="contentblock_narrow">Welcome: Brad</div><div id="message" class="contentblock_narrow">Welcome: Loading.</div><div id="appcontainer" class="contentblock_wide"><input type="text" id="appname" name="appname" placeholder="Chapter"/><input type="submit" value="Add Chapter" onclick="addApp()"/><input type="text" id="appname" name="appname" placeholder="Page"/><input type="submit" value="Add Page" onclick="addApp()"/></div></div></body>

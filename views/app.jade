@@ -1,0 +1,66 @@
+extends baseFiles
+
+block scripts
+	script
+		apps=null;
+		function init(){
+		
+			getApp();
+		}
+		
+		function getPage(str){
+			window.location=escape("/editpage/"+(str));	
+		}
+
+		function getApp()
+		{
+			$.ajax({ method:'post',url: "/getpagesdo",context: document.body,
+				data:{}
+				
+				}).done(function(data) {
+					$("#appcontainer").html("");
+					var ob=JSON.parse(data);
+					if (ob.length>0){
+						$("#message").html("Apps Loaded.");
+						apps=ob;
+						for (var i in apps){
+							var tapp=apps[i];
+							var fn="getPage('"+tapp.pagename+"')";
+							$("#appcontainer").append("<input type='submit' name="+tapp.pagename+" value='"+tapp.pagename+"'  onclick="+fn+"  >");	
+						}
+					}else{
+						$("#message").html("No Apps Yet. Add some in the panel below.");
+					}
+
+				}
+			);
+		}
+		
+		function addPage()
+		{
+		
+			
+			$.ajax({ method:'post',url: "/addpagedo",context: document.body,
+				data:{pagename:escape(document.getElementById("pagename").value)}
+				
+				}).done(function(data) {
+					$("#appcontainer").html("");
+					getApp();
+
+				}
+			
+			);	
+		}
+		
+		
+			
+					
+block content
+	div(class='contentblock_wrapper')
+		#header.contentblock_narrow Welcome: !{session.username} / !{session.appid+"#"} 
+		#message.contentblock_narrow Welcome: Loading.
+		#addapps.contentblock_narrow 
+			input(type='text',id='pagename' ,name='pagename' ,placeholder='Page Name');
+			input(type='submit', value="Add Page", onclick='addPage()');	
+		#appcontainer.contentblock_wide
+			

@@ -1,0 +1,41 @@
+<head><link rel="stylesheet" type="text/css" href="publicweb/style.css">
+<script type="text/javascript" src='publicweb/jquery.js'></script>
+<script type="text/javascript" src='publicweb/jcookies.js'></script><script>apps=null;
+function init(){
+ getApps();
+}
+function getApp(str){
+ window.location=("/app/"+(str));	
+}
+function getApps()
+{
+ $.ajax({ method:'post',url: "/getappsdo",context: document.body,
+  data:{}
+  }).done(function(data) {
+   $("#appcontainer").html("");
+   var ob=JSON.parse(data);
+   if (ob.length>0){
+    $("#message").html("Apps Loaded.");
+    apps=ob;
+    for (var i in apps){
+     var tapp=apps[i];
+     var fn="getApp(\'"+(tapp.appname)+"\')";
+     $("#appcontainer").append("<input type='submit' name="+(tapp.appname)+" value="+(tapp.appname)+" onclick="+fn+"  >");	
+    }
+   }else{
+    $("#message").html("No Apps Yet. Add some in the panel below.");
+   }
+   
+  }
+ );		
+ 
+}
+function addApp(){
+ $.ajax({ method:'post',url: "/addappdo",context: document.body,
+  data:{appname:document.getElementById("appname").value}
+  }).done(function(data) {
+   alert("ADDED APP"+data);
+   getApps();
+  }
+ );			
+}</script></head><body onload="init()"><div class="contentblock_wrapper"><div id="header" class="contentblock_narrow">Welcome: Brad / Your Apps:</div><div id="message" class="contentblock_narrow">Welcome: Loading.</div><div id="addapps" class="contentblock_narrow"> <input type="text" id="appname" name="appname" placeholder="App Name"/><input type="submit" value="Add App" onclick="addApp()"/></div><div id="appcontainer" class="contentblock_wide"></div></div></body>

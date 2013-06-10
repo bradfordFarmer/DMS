@@ -1,0 +1,96 @@
+extends baseFiles
+
+block scripts
+	script
+		function init(){
+			if (getCookie("login_checkbox")=="true"){
+				document.getElementById('remember').checked=true;	
+			}else{
+				document.getElementById('remember').checked=false;	
+			}
+			document.getElementById('username').value=getCookie("un");
+			document.getElementById('password').value=getCookie("ps");			
+			$("#message").html("Login or Register");	
+		}
+
+		function submitLogin()
+		{
+			if (document.getElementById('remember').checked){
+				setCookie("login_checkbox",true,30);	
+			}else{
+				setCookie("login_checkbox",false,30);		
+			}
+			setCookie("un",document.getElementById('username').value,30);	
+			setCookie("ps",document.getElementById('password').value,30);				
+			$.ajax({ method:'post',url: "/logindo",context: document.body,
+				data:{ 'user':document.getElementById('username').value,
+				'pass':document.getElementById('password').value    }
+				
+				}).done(function(data) {
+					//respond
+					if (data=="go"){
+						window.location="/apps/";	
+					}else{
+						$("#message").html(data);	
+					}
+				}
+			
+			);		
+		}
+		
+		function submitUser()
+		{
+			if (document.getElementById('remember').checked){
+				setCookie("login_checkbox",true,30);	
+			}else{
+				setCookie("login_checkbox",false,30);		
+			}
+			
+			$.ajax({ method:'post',url: "/registerdo",context: document.body,
+				data:{ 'user':document.getElementById('username2').value,
+				'pass':document.getElementById('password2').value    }
+				
+				}).done(function(data) {
+					//respond
+					if (data=="go"){
+						window.location="/apps/";	
+					}else{
+						$("#message").html(data);	
+					}
+				}
+			
+			);		
+		}
+			
+block content
+	div(class='contentblock_wrapper')
+		
+		#message.contentblock_narrow !{pagemessage}
+		table(class='centertable')
+			tr
+				td
+					div(class='contentblock_narrow')
+						div(class='contentblock_title') Login
+						
+						input(id='username',name='username',type='text',value='',placeholder='username') 
+						|<br>
+						input(id='password',name='password',type='password',value='',placeholder='password') 
+						div(class='content_spacer')	
+						input(id='remember',name='remember',type='checkbox',value='' ) 
+						|Remember Me			
+						|<br>
+						div(class='content_spacer')
+						input(type='submit',value='Login',onclick='submitLogin();')
+			
+				td
+					div(class='contentblock_narrow')
+						div(class='contentblock_title') Register
+						
+						input(id='username2',name='username2',type='text',value='',placeholder='username') 
+						|<br>
+						input(id='password2',name='password2',type='password',value='',placeholder='password') 
+						|<br>
+						input(id='password2r',name='password2r',type='password',value='',placeholder='pass again') 
+						
+						div(class='content_spacer')
+						input(type='submit',value='Register',onclick='submitUser();')
