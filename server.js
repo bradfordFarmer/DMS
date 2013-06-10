@@ -10,7 +10,6 @@ var login=require('./login'),
 	singleapp=require('./singleapp'),
 	editpage=require('./editpage'),
 	app = express(),
-	mongod=require('mongodb').MongoClient;
 	server = http.createServer(app),
 	io = require('socket.io').listen(server);
 
