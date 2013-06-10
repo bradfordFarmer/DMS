@@ -2,7 +2,7 @@
 
 var outport= process.env.PORT || 1337;;
 var express = require('express');
-
+var connectionString = process.env.CUSTOMCONNSTR_MONGOLAB_URI ||  "localhost:27017";
 var login=require('./login'),
 	apps=require('./apps'),
 	socketIO=require('./socket');
@@ -12,6 +12,7 @@ var login=require('./login'),
 	app = express(),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server);
+
 
 app.configure(function() {
   app.use(express.bodyParser());
@@ -25,7 +26,7 @@ app.use("/publicweb", express.static(__dirname + '/publicweb'));
 var databaseUrl = "localhost:27017"; // "username:password@example.com/mydb"
 var collections = ["users","apps","pages"];
 
-var db = require("mongojs").connect(databaseUrl, collections);
+var db = require("mongojs").connect(connectionString, collections);
 login.setApp(db);
 apps.setApp(db);
 socketIO.setupSocket(db,io);
