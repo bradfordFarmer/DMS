@@ -10,7 +10,8 @@ var userExistMessage ='user already exists';
 function setupSocket(myDB, myIO){
 	db=myDB;
 	io=myIO;
-	
+	 
+
 }
 
 exports.setupSocket= setupSocket;
