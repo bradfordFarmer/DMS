@@ -32,7 +32,6 @@ var db = require('mongojs').connect(connectionString, collections);
 
 login.setApp(db);
 apps.setApp(db);
-socketIO.setupSocket(db, io);
 singleapp.setApp(db);
 editpage.setApp(db);
 
