@@ -1,13 +1,17 @@
 var db;
+var myPort ;
 
-
-function setApp(idb){
+function setApp(idb, outport){
 	db=idb;
+	myPort=outport;
+	
 }
 
 function respondLogin(req,res){
 	
-	res.render('login.jade',{});	
+	req.session.portname= myPort;
+	
+	res.render('login.jade',{session:req.session});	
 }
  
 function respondLoginDo(req,res){

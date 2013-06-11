@@ -2,6 +2,7 @@
 
 var outport= process.env.port || 1337;
 var express = require('express');
+var socket= require('socket.io');
 var connectionString = process.env.CUSTOMCONNSTR_MONGOLAB_URI ||  "localhost:27017";
 var login=require('./login'),
 	apps=require('./apps'),
@@ -13,15 +14,14 @@ var login=require('./login'),
 	sessionStore = new MemoryStore();
 	app = express(),
 	server = http.createServer(app),
-	io = require('socket.io').listen(server);
+	io = socket.listen(server);
 
 
 app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
-	  secret:'supadupadudu',
-	  key: 'express.sid'}));
+	  secret:'supadupadudu'}));
 });
 
 app.set('view engine', 'jade');
@@ -30,7 +30,7 @@ var collections = ["users","apps","pages", "connected"];
 var db = require('mongojs').connect(connectionString, collections);
 
 
-login.setApp(db);
+login.setApp(db,outport);
 apps.setApp(db);
 singleapp.setApp(db);
 editpage.setApp(db);
