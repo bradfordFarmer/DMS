@@ -1,6 +1,6 @@
 
 
-var outport= process.env.PORT || 1337;
+var outport= process.env.port || 1337;
 var express = require('express');
 var connectionString = process.env.CUSTOMCONNSTR_MONGOLAB_URI ||  "localhost:27017";
 var login=require('./login'),
