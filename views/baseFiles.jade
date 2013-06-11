@@ -6,7 +6,7 @@ head
 	script(src='/publicweb/jcookies.js')
 	script(src='/socket.io/socket.io.js')
 	script 
-		var socket = io.connect('http://bchaos.azurewebsites.net:!{session.portname}');
+		var socket = io.connect();
 		socket.on('Database Error', function (data) {
 			alert(data.error);
 			$("#message").html(data.error);
